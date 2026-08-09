@@ -8,14 +8,7 @@ genai.configure(
 model = genai.GenerativeModel(
     "gemini-3.6-flash"
 )
-
-
-def generate_summary(
-    today_data,
-    yesterday_data
-):
-
-    prompt = f"""
+PROMPT = """
 You are generating a Telegram message for a daily gold price update.
 
 TODAY DATA:
@@ -36,50 +29,63 @@ RULES:
 - If yesterday's data exists, calculate percentage change.
 - If yesterday's data is unavailable, show N/A.
 - Market Summary must contain exactly 3 bullet points.
-- AI Insight must be 1-2 sentences.
-- Investment Tip of the Day must be exactly 1 sentence.
+- AI Insight must be exactly 1 short sentence.
+- Investment Tip of the Day must be exactly 1 short sentence.
+- AI Insight and Investment Tip MUST be different from each other.
+- AI Insight and Investment Tip MUST be generated fresh for every response.
+- Do not repeat advice from previous sections.
+- Base insights on today's prices, price changes, and market movement.
+- Avoid generic statements.
 - Keep the response concise and professional.
 - Use today's actual date.
 
-FOLLOW THIS EXACT STYLE:
+OUTPUT FORMAT:
 
 📈 DAILY GOLD PRICE UPDATE
-📅 09 Aug 2026
+📅 <today date>
 
 🏆 24K Gold
-• Today: ₹132,936 / 10g
-• Yesterday: N/A
-• Change: N/A
+• Today: ₹<value> / 10g
+• Yesterday: ₹<value> / 10g
+• Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 🥇 22K Gold
-• Today: ₹121,858 / 10g
-• Yesterday: N/A
-• Change: N/A
+• Today: ₹<value> / 10g
+• Yesterday: ₹<value> / 10g
+• Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 🥈 20K Gold
-• Today: ₹110,780 / 10g
-• Yesterday: N/A
-• Change: N/A
+• Today: ₹<value> / 10g
+• Yesterday: ₹<value> / 10g
+• Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 🥉 18K Gold
-• Today: ₹99,702 / 10g
-• Yesterday: N/A
-• Change: N/A
+• Today: ₹<value> / 10g
+• Yesterday: ₹<value> / 10g
+• Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 📊 Market Summary
-🟢 Gold prices remain elevated.
-🟢 24K continues to be the benchmark investment grade.
-🟢 Historical comparison unavailable today.
+🟢 Bullet 1
+🟢 Bullet 2
+🟢 Bullet 3
 
 💡 AI Insight
-Consider SIP-style gold accumulation instead of timing daily fluctuations.
+<one sentence generated from today's data>
 
 🎯 Investment Tip of the Day
-Invest regularly and focus on long-term accumulation rather than short-term price movements.
+<one sentence generated from today's data>
 
 Generate the message using the supplied data.
 """
 
+
+def generate_summary(
+    today_data,
+    yesterday_data
+):
+
+    prompt = PROMPT.format(today_data=today_data,yesterday_data=yesterday_data)
+    
     response = model.generate_content(
         prompt
     )
