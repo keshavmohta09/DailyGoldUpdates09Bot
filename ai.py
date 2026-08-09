@@ -1,5 +1,6 @@
 import google.generativeai as genai
 from config import GEMINI_API_KEY
+import datetime
 
 genai.configure(
     api_key=GEMINI_API_KEY
@@ -42,7 +43,7 @@ RULES:
 OUTPUT FORMAT:
 
 📈 DAILY GOLD PRICE UPDATE
-📅 <today date>
+📅 {date}
 
 🏆 24K Gold
 • Today: ₹<value> / 10g
@@ -84,8 +85,12 @@ def generate_summary(
     yesterday_data
 ):
 
-    prompt = PROMPT.format(today_data=today_data,yesterday_data=yesterday_data)
-    
+    prompt = PROMPT.format(
+        today_data=today_data,
+        yesterday_data=yesterday_data,
+        date=datetime.date.today().strftime(format='%d-%m-%Y')
+    )
+
     response = model.generate_content(
         prompt
     )
