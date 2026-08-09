@@ -2,17 +2,19 @@ name: Daily Gold Update
 
 on:
   schedule:
-    - cron: '*/2 * * * *'
-
+    - cron: '30 3 * * *'   # 9:00 AM IST (UTC+5:30) daily
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: daily-gold-update
+  cancel-in-progress: false
+
 jobs:
   run:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -23,6 +25,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: "pip"
 
       - name: Install Dependencies
         run: |
@@ -41,10 +44,10 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add data/latest.json
-
           git diff --staged --quiet || git commit -m "Update latest gold prices [skip ci]"
 
       - name: Push Changes
-        run: git push
+        run: |
+          git pull --rebase
+          git push
