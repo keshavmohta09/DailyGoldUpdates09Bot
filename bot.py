@@ -98,15 +98,15 @@ try:
         "Fetching gold rates..."
     )
 
-    today_data = get_all_delhi_rates()
+    current_data = get_all_delhi_rates()
 
     validate_response(
-        today_data,
+        current_data,
         "Gold Price Scraper"
     )
 
     validate_gold_data(
-        today_data
+        current_data
     )
 
     logger.info(
@@ -114,17 +114,17 @@ try:
     )
 
     logger.info(
-        f"Today's prices: "
-        f"{today_data['karat_prices_per_10g']}"
+        f"Current prices: "
+        f"{current_data['karat_prices_per_10g']}"
     )
 
     logger.info(
         "Loading previous day data..."
     )
 
-    yesterday_data = load_previous_data()
+    previous_data = load_previous_data()
 
-    if not yesterday_data:
+    if not previous_data:
 
         logger.warning(
             "No previous data found. "
@@ -134,8 +134,8 @@ try:
     else:
 
         logger.info(
-            f"Yesterday prices: "
-            f"{yesterday_data.get('karat_prices_per_10g', {})}"
+            f"Previous prices: "
+            f"{previous_data.get('karat_prices_per_10g', {})}"
         )
 
     logger.info(
@@ -143,8 +143,8 @@ try:
     )
 
     summary = generate_summary(
-        today_data,
-        yesterday_data
+        current_data,
+        previous_data
     )
 
     validate_response(
@@ -180,7 +180,7 @@ try:
     )
 
     save_current_data(
-        today_data
+        current_data
     )
 
     logger.info(
