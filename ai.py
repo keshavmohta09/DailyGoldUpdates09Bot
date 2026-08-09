@@ -13,11 +13,11 @@ model = genai.GenerativeModel(
 PROMPT = """
 You are generating a Telegram message for a daily gold price update.
 
-TODAY DATA:
-{today_data}
+CURRENT DATA:
+{current_data}
 
-YESTERDAY DATA:
-{yesterday_data}
+PREVIOUS DATA:
+{previous_data}
 
 IMPORTANT:
 
@@ -48,38 +48,37 @@ RULES:
 - Do not use code blocks.
 - Use emojis exactly as shown.
 - Format currency in Indian Rupees with commas.
-- If yesterday's data exists, calculate percentage change.
-- If yesterday's data is unavailable, show N/A.
+- If previous's data exists, calculate percentage change.
+- If previous's data is unavailable, show N/A.
 - Market Summary must contain exactly 3 bullet points.
 - AI Insight must be exactly 1 short sentence.
 - Investment Tip of the Day must be exactly 1 short sentence.
 - AI Insight and Investment Tip MUST be different.
 - Generate fresh insight and tip every time.
 - Do not repeat generic advice.
-- Use today's actual date.
 
 OUTPUT FORMAT:
 
 📈 DAILY GOLD PRICE UPDATE
 
 🏆 24K Gold
-• Today: ₹<value> / 10g
-• Yesterday: ₹<value> / 10g
+• Current: ₹<value> / 10g
+• Previous: ₹<value> / 10g
 • Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 🥇 22K Gold
-• Today: ₹<value> / 10g
-• Yesterday: ₹<value> / 10g
+• Current: ₹<value> / 10g
+• Previous: ₹<value> / 10g
 • Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 🥈 20K Gold
-• Today: ₹<value> / 10g
-• Yesterday: ₹<value> / 10g
+• Current: ₹<value> / 10g
+• Previous: ₹<value> / 10g
 • Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 🥉 18K Gold
-• Today: ₹<value> / 10g
-• Yesterday: ₹<value> / 10g
+• Current: ₹<value> / 10g
+• Previous: ₹<value> / 10g
 • Change: 🟢 +x.xx% or 🔴 -x.xx%
 
 📊 Market Summary
@@ -98,13 +97,13 @@ Generate the message using the supplied data.
 
 
 def generate_summary(
-    today_data,
-    yesterday_data
+    current_data,
+    previous_data
 ):
 
     prompt = PROMPT.format(
-        today_data=today_data,
-        yesterday_data=yesterday_data
+        current_data=current_data,
+        previous_data=previous_data
     )
 
     response = model.generate_content(
