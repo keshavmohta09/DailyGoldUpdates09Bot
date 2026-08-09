@@ -2,7 +2,7 @@ name: Daily Gold Update
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/2 * * * *'
 
   workflow_dispatch:
 
