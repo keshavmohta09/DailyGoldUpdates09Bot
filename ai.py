@@ -1,14 +1,17 @@
-import google.generativeai as genai
-from config import GEMINI_API_KEY
 import datetime
+
+import google.generativeai as genai
+
+from config import GEMINI_API_KEY
 
 genai.configure(
     api_key=GEMINI_API_KEY
 )
 
 model = genai.GenerativeModel(
-    "gemini-3.6-flash"
+    "gemini-2.5-flash"
 )
+
 PROMPT = """
 You are generating a Telegram message for a daily gold price update.
 
@@ -18,6 +21,27 @@ TODAY DATA:
 YESTERDAY DATA:
 {yesterday_data}
 
+IMPORTANT:
+
+Use ONLY the values inside:
+
+karat_prices_per_10g
+
+Ignore:
+- purity_weight_table
+- silver prices
+- gram prices
+- tola prices
+- kilogram prices
+
+Generate the report ONLY for:
+24K
+22K
+20K
+18K
+
+All values must be shown as price per 10 grams.
+
 RULES:
 
 - Return ONLY the final Telegram message.
@@ -26,18 +50,14 @@ RULES:
 - Do not use code blocks.
 - Use emojis exactly as shown.
 - Format currency in Indian Rupees with commas.
-- Show prices per 10 grams.
 - If yesterday's data exists, calculate percentage change.
 - If yesterday's data is unavailable, show N/A.
 - Market Summary must contain exactly 3 bullet points.
 - AI Insight must be exactly 1 short sentence.
 - Investment Tip of the Day must be exactly 1 short sentence.
-- AI Insight and Investment Tip MUST be different from each other.
-- AI Insight and Investment Tip MUST be generated fresh for every response.
-- Do not repeat advice from previous sections.
-- Base insights on today's prices, price changes, and market movement.
-- Avoid generic statements.
-- Keep the response concise and professional.
+- AI Insight and Investment Tip MUST be different.
+- Generate fresh insight and tip every time.
+- Do not repeat generic advice.
 - Use today's actual date.
 
 OUTPUT FORMAT:
@@ -71,10 +91,10 @@ OUTPUT FORMAT:
 🟢 Bullet 3
 
 💡 AI Insight
-<one sentence generated from today's data>
+<one sentence>
 
 🎯 Investment Tip of the Day
-<one sentence generated from today's data>
+<one sentence>
 
 Generate the message using the supplied data.
 """
@@ -88,7 +108,9 @@ def generate_summary(
     prompt = PROMPT.format(
         today_data=today_data,
         yesterday_data=yesterday_data,
-        date=datetime.date.today().strftime(format='%d-%m-%Y')
+        date=datetime.date.today().strftime(
+            "%d-%m-%Y"
+        )
     )
 
     response = model.generate_content(
