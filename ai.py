@@ -9,7 +9,7 @@ genai.configure(
 )
 
 model = genai.GenerativeModel(
-    "gemini-2.5-flash"
+    "gemini-3.6-flash"
 )
 
 PROMPT = """
