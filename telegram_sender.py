@@ -48,22 +48,22 @@ def send_message(message):
 
                 logger.info(
                     f"Message sent to chat id"
-                    f"{num+1}"
+                    f" {num+1}"
                 )
 
             else:
 
                 logger.error(
                     f"Telegram error for chat id"
-                    f"{num+1}: "
-                    f"{response_json}"
+                    f" {num+1}: "
+                    f" {response_json}"
                 )
 
         except Exception as e:
 
             logger.error(
                 f"Failed sending to chat id"
-                f"{num+1}: {e}"
+                f" {num+1}: {e}"
             )
 
             results.append({
