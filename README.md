@@ -1,6 +1,10 @@
 # 🥇 DailyGoldUpdates09Bot
 
-AI-powered Telegram bot that tracks live gold prices, analyzes market trends using Google Gemini, and delivers smart gold market insights directly to Telegram.
+DailyGoldUpdates09Bot is a GenAI-powered financial insights assistant that combines live gold market data with Google's Gemini AI to generate intelligent market analysis and investment guidance.
+
+Unlike traditional price alert bots, the system does more than fetch and forward data. It interprets market movements, compares historical prices, identifies trends, generates contextual insights, and delivers human-readable investment intelligence directly to Telegram.
+
+The project demonstrates how Generative AI can be integrated into real-world data pipelines to transform raw financial information into actionable insights.
 
 ---
 
